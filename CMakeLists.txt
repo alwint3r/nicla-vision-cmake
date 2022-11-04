@@ -4,7 +4,6 @@ project(ArduinoCmake C CXX ASM)
 
 include(cmake/nicla_vision.cmake)
 include(cmake/libraries/socket_wrapper.cmake)
-include(cmake/libraries/arduino_wifi.cmake)
 
 add_library(core STATIC
     ${ARDUINO_CORE_C_SRCS}
@@ -19,7 +18,6 @@ add_executable(firmware.elf
 )
 
 include_socket_wrapper()
-include_wifi()
 
 target_include_directories(firmware.elf PRIVATE
     ${ARDUINO_INCLUDE_DIRS}
@@ -42,12 +40,9 @@ target_link_libraries(firmware.elf
     ${ARDUINO_CORE_DIR}/variants/NICLA_VISION/libs/libmbed.a
 
     SocketWrapper
-    WiFi
 
     ${ARDUINO_CLOSING_LINKFLAGS}
 )
-
-# set_property(TARGET firmware PROPERTY LINK_DEPENDS ${LINKER_SCRIPT})
 
 target_compile_definitions(firmware.elf PRIVATE
     ${ARDUINO_COMPILE_DEFINITIONS}
