@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.20)
 project(ArduinoCmake C CXX ASM)
 
 include(cmake/nicla_vision.cmake)
-include(cmake/libraries/socket_wrapper.cmake)
+include(cmake/include_library.cmake)
+
+arduino_include_library(Wire)
 
 add_library(core STATIC
     ${ARDUINO_CORE_C_SRCS}
@@ -16,8 +18,6 @@ add_executable(firmware.elf
     ${ARDUINO_TARGET_SRCS}
     src/main.cpp
 )
-
-include_socket_wrapper()
 
 target_include_directories(firmware.elf PRIVATE
     ${ARDUINO_INCLUDE_DIRS}
@@ -36,10 +36,9 @@ target_link_libraries(firmware.elf
 
     -Wl,--whole-archive
     core
+    Wire
 
     ${ARDUINO_CORE_DIR}/variants/NICLA_VISION/libs/libmbed.a
-
-    SocketWrapper
 
     ${ARDUINO_CLOSING_LINKFLAGS}
 )
