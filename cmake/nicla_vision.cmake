@@ -342,7 +342,7 @@ set(ARDUINO_INCLUDE_DIRS
     ${ARDUINO_CORE_DIR}/variants/NICLA_VISION
 )
 
-set(COMPILE_DEFINITIONS
+set(ARDUINO_COMPILE_DEFINITIONS
     ARM_MATH_CM7
     CM4_BOOT_BY_APPLICATION
     __CMSIS_RTOS
@@ -435,7 +435,7 @@ set(COMPILE_DEFINITIONS
     ARDUINO_ARCH_MBED
 )
 
-set(COMPILE_OPTIONS
+set(ARDUINO_COMPILE_OPTIONS
     -fdata-sections
     -ffunction-sections
     -fmessage-length=0
@@ -469,7 +469,7 @@ set(COMPILE_OPTIONS
     -DMBED_TRAP_ERRORS_ENABLED=1
 )
 
-set(COMMON_LINKFLAGS
+set(ARDUINO_COMMON_LINKFLAGS
     -Wl,--gc-sections
     -w -Wl,--as-needed
     -DMBED_APP_SIZE=0x1c0000
@@ -498,7 +498,7 @@ set(COMMON_LINKFLAGS
     -mthumb
 )
 
-set(CLOSING_LINKFLAGS
+set(ARDUINO_CLOSING_LINKFLAGS
     -Wl,--no-whole-archive
     -Wl,--start-group
     -lstdc++

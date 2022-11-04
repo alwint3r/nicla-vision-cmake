@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.20)
 project(ArduinoCmake C CXX ASM)
 
 include(cmake/nicla_vision.cmake)
+include(cmake/libraries/socket_wrapper.cmake)
+include(cmake/libraries/arduino_wifi.cmake)
 
 add_library(core STATIC
     ${ARDUINO_CORE_C_SRCS}
@@ -16,6 +18,9 @@ add_executable(firmware.elf
     src/main.cpp
 )
 
+include_socket_wrapper()
+include_wifi()
+
 target_include_directories(firmware.elf PRIVATE
     ${ARDUINO_INCLUDE_DIRS}
 )
@@ -25,7 +30,7 @@ target_include_directories(core PRIVATE
 )
 
 target_link_libraries(firmware.elf
-    ${COMMON_LINKFLAGS}
+    ${ARDUINO_COMMON_LINKFLAGS}
 
     -T${LINKER_SCRIPT}
 
@@ -36,17 +41,20 @@ target_link_libraries(firmware.elf
 
     ${ARDUINO_CORE_DIR}/variants/NICLA_VISION/libs/libmbed.a
 
-    ${CLOSING_LINKFLAGS}
+    SocketWrapper
+    WiFi
+
+    ${ARDUINO_CLOSING_LINKFLAGS}
 )
 
 # set_property(TARGET firmware PROPERTY LINK_DEPENDS ${LINKER_SCRIPT})
 
 target_compile_definitions(firmware.elf PRIVATE
-    ${COMPILE_DEFINITIONS}
+    ${ARDUINO_COMPILE_DEFINITIONS}
 )
 
 target_compile_definitions(core PRIVATE
-    ${COMPILE_DEFINITIONS}
+    ${ARDUINO_COMPILE_DEFINITIONS}
 )
 
 
@@ -56,7 +64,7 @@ target_compile_options(firmware.elf PRIVATE
     $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
     $<$<COMPILE_LANGUAGE:CXX>:-std=gnu++14>
 
-    ${COMPILE_OPTIONS}
+    ${ARDUINO_COMPILE_OPTIONS}
 )
 
 target_compile_options(core PRIVATE
@@ -65,7 +73,7 @@ target_compile_options(core PRIVATE
     $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
     $<$<COMPILE_LANGUAGE:CXX>:-std=gnu++14>
 
-    ${COMPILE_OPTIONS}
+    ${ARDUINO_COMPILE_OPTIONS}
 )
 
 add_custom_command(OUTPUT firmware.bin DEPENDS firmware.elf COMMAND ${CMAKE_OBJCOPY} -Obinary firmware.elf firmware.bin)
