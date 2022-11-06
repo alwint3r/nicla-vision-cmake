@@ -14,14 +14,18 @@ target_compile_options(ArduinoBLE PRIVATE
     ${ARDUINO_COMPILE_OPTIONS}
 )
 
-set(ARDUINO_INCLUDE_DIRS
-    "${ARDUINO_INCLUDE_DIRS}"
+set(ARDUINO_BLE_INCLUDE_DIRS
+    ${ARDUINO_INCLUDE_DIRS}
     ${CMAKE_CURRENT_LIST_DIR}/src
+)
+
+# Append BLE library include back to ARDUINO_INCLUDE_DIRS at parent scope
+set(ARDUINO_INCLUDE_DIRS
+    "${ARDUINO_BLE_INCLUDE_DIRS}"
     PARENT_SCOPE
 )
 
 target_include_directories(ArduinoBLE PRIVATE
-    ${ARDUINO_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_LIST_DIR}/src
+    ${ARDUINO_BLE_INCLUDE_DIRS}
 )
 
