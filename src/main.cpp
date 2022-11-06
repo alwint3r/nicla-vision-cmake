@@ -1,34 +1,58 @@
 #include <Arduino.h>
 #include <Wire.h>
+#include <ArduinoBLE.h>
 
 void setup()
 {
     Serial.begin(115200);
-    while (!Serial);
+    while (!Serial)
+        ;
 
-    Wire.begin();
+    auto bleResult = BLE.begin();
+    Serial.print("BLE Result: ");
+    Serial.println(bleResult);
 
-    pinMode(24, OUTPUT);
+    BLE.scan();
 }
 
 void loop()
 {
-    Serial.println("run");
-    digitalWrite(24, HIGH);
-    delay(100);
-    digitalWrite(24, LOW);
-    delay(100);
+    // check if a peripheral has been discovered
+    BLEDevice peripheral = BLE.available();
 
-   
-    for(int i = 1; i < 127; i++)
+    if (peripheral)
     {
-        Wire.beginTransmission(i);
-        if (Wire.endTransmission(i) == 0)
-        {
-            Serial.print("Found device at address: ");
-            Serial.println(i, HEX);
-        }
-    }
+        // discovered a peripheral
+        Serial.println("Discovered a peripheral");
+        Serial.println("-----------------------");
 
-     delay(1000);
+        // print address
+        Serial.print("Address: ");
+        Serial.println(peripheral.address());
+
+        // print the local name, if present
+        if (peripheral.hasLocalName())
+        {
+            Serial.print("Local Name: ");
+            Serial.println(peripheral.localName());
+        }
+
+        // print the advertised service UUIDs, if present
+        if (peripheral.hasAdvertisedServiceUuid())
+        {
+            Serial.print("Service UUIDs: ");
+            for (int i = 0; i < peripheral.advertisedServiceUuidCount(); i++)
+            {
+                Serial.print(peripheral.advertisedServiceUuid(i));
+                Serial.print(" ");
+            }
+            Serial.println();
+        }
+
+        // print the RSSI
+        Serial.print("RSSI: ");
+        Serial.println(peripheral.rssi());
+
+        Serial.println();
+    }
 }

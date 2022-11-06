@@ -7,6 +7,8 @@ include(cmake/include_library.cmake)
 
 arduino_include_library(Wire)
 
+add_subdirectory(lib/ArduinoBLE)
+
 add_library(core STATIC
     ${ARDUINO_CORE_C_SRCS}
     ${ARDUINO_CORE_SRCS}
@@ -37,6 +39,7 @@ target_link_libraries(firmware.elf
     -Wl,--whole-archive
     core
     Wire
+    ArduinoBLE
 
     ${ARDUINO_CORE_DIR}/variants/NICLA_VISION/libs/libmbed.a
 
