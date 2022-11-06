@@ -6,6 +6,9 @@ include(cmake/nicla_vision.cmake)
 include(cmake/include_library.cmake)
 
 arduino_include_library(Wire)
+arduino_include_library(SocketWrapper)
+arduino_include_library(WiFi)
+
 
 add_subdirectory(lib/ArduinoBLE)
 
@@ -40,6 +43,8 @@ target_link_libraries(firmware.elf
     core
     Wire
     ArduinoBLE
+    SocketWrapper
+    WiFi
 
     ${ARDUINO_CORE_DIR}/variants/NICLA_VISION/libs/libmbed.a
 
