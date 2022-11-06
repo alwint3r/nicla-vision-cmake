@@ -1,58 +1,32 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include <ArduinoBLE.h>
+#include <WiFi.h>
 
 void setup()
 {
     Serial.begin(115200);
     while (!Serial)
         ;
-
-    auto bleResult = BLE.begin();
-    Serial.print("BLE Result: ");
-    Serial.println(bleResult);
-
-    BLE.scan();
 }
 
 void loop()
 {
-    // check if a peripheral has been discovered
-    BLEDevice peripheral = BLE.available();
 
-    if (peripheral)
+    int res = WiFi.scanNetworks();
+    Serial.print("Available WiFi networks: ");
+    Serial.println(res);
+
+    for (int i = 0; i < res; i++)
     {
-        // discovered a peripheral
-        Serial.println("Discovered a peripheral");
-        Serial.println("-----------------------");
+        auto ssid = WiFi.SSID(i);
+        auto rssi = WiFi.RSSI(i);
 
-        // print address
-        Serial.print("Address: ");
-        Serial.println(peripheral.address());
-
-        // print the local name, if present
-        if (peripheral.hasLocalName())
-        {
-            Serial.print("Local Name: ");
-            Serial.println(peripheral.localName());
-        }
-
-        // print the advertised service UUIDs, if present
-        if (peripheral.hasAdvertisedServiceUuid())
-        {
-            Serial.print("Service UUIDs: ");
-            for (int i = 0; i < peripheral.advertisedServiceUuidCount(); i++)
-            {
-                Serial.print(peripheral.advertisedServiceUuid(i));
-                Serial.print(" ");
-            }
-            Serial.println();
-        }
-
-        // print the RSSI
+        Serial.print("SSID: ");
+        Serial.println(ssid);
         Serial.print("RSSI: ");
-        Serial.println(peripheral.rssi());
-
+        Serial.println(rssi);
         Serial.println();
     }
+
+    delay(3000);
 }
