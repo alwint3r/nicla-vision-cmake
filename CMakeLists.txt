@@ -11,6 +11,7 @@ arduino_include_library(WiFi)
 
 
 add_subdirectory(lib/ArduinoBLE)
+add_subdirectory(src)
 
 add_library(core STATIC
     ${ARDUINO_CORE_C_SRCS}
@@ -21,7 +22,6 @@ add_library(core STATIC
 
 add_executable(firmware.elf
     ${ARDUINO_TARGET_SRCS}
-    src/main.cpp
 )
 
 target_include_directories(firmware.elf PRIVATE
@@ -45,6 +45,7 @@ target_link_libraries(firmware.elf
     ArduinoBLE
     SocketWrapper
     WiFi
+    Main
 
     ${ARDUINO_CORE_DIR}/variants/NICLA_VISION/libs/libmbed.a
 
