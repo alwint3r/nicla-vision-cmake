@@ -4,13 +4,17 @@ project(ArduinoCmake C CXX ASM)
 
 include(cmake/nicla_vision.cmake)
 include(cmake/include_library.cmake)
+include(cmake/include_local_library.cmake)
 
 arduino_include_library(Wire)
+arduino_include_library(SPI)
 arduino_include_library(SocketWrapper)
 arduino_include_library(WiFi)
-
+arduino_include_library(Camera Wire)
+arduino_include_library(GC2145)
 
 add_subdirectory(lib/ArduinoBLE)
+
 add_subdirectory(src)
 
 add_library(core STATIC
@@ -41,11 +45,14 @@ target_link_libraries(firmware.elf
 
     -Wl,--whole-archive
     core
+    Main
     Wire
+    SPI
     ArduinoBLE
     SocketWrapper
     WiFi
-    Main
+    Camera
+    GC2145
 
     ${ARDUINO_CORE_DIR}/variants/NICLA_VISION/libs/libmbed.a
 

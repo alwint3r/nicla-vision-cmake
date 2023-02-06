@@ -1,5 +1,5 @@
-function(arduino_include_library LIB_NAME)
-    set(LIBRARY_DIR ${ARDUINO_CORE_DIR}/libraries)
+function(include_local_library LIB_NAME)
+    set(LIBRARY_DIR ${CMAKE_SOURCE_DIR}/lib)
 
     file(GLOB LIB_SRCS
         ${LIBRARY_DIR}/${LIB_NAME}/*.c
